@@ -114,7 +114,7 @@ subtype =
         }
 
 
-{-| Media types can be a part of another data schema, like the [data URI scheme]<https://en.wikipedia.org/wiki/Data_URI_scheme>), so it can be helpful to access the internal parser.
+{-| Media types can be a part of another data schema, like the [data URI scheme](https://en.wikipedia.org/wiki/Data_URI_scheme), so it can be helpful to access the internal parser.
 -}
 parser : Parser MediaType
 parser =
