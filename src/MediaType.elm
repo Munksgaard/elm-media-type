@@ -1,6 +1,6 @@
 module MediaType exposing
     ( MediaType, Type(..)
-    , fromString, parser
+    , fromString, toString, parser
     )
 
 {-| Parse and handle media types in Elm.
@@ -13,7 +13,7 @@ module MediaType exposing
 
 # Parsing
 
-@docs fromString, parser
+@docs fromString, toString, parser
 
 -}
 
@@ -157,3 +157,48 @@ fromString : String -> Maybe MediaType
 fromString s =
     Parser.run parser s
         |> Result.toMaybe
+
+
+{-| Convert a media type back into a string.
+-}
+toString : MediaType -> String
+toString mediaType =
+    let
+        typeString =
+            case mediaType.type_ of
+                Application ->
+                    "application"
+
+                Audio ->
+                    "audio"
+
+                Example ->
+                    "example"
+
+                Font ->
+                    "font"
+
+                Image ->
+                    "image"
+
+                Message ->
+                    "message"
+
+                Model ->
+                    "model"
+
+                Multipart ->
+                    "multipart"
+
+                Text ->
+                    "text"
+
+                Video ->
+                    "video"
+    in
+    typeString
+        ++ "/"
+        ++ Maybe.withDefault "" (Maybe.map (flip (++) ".") mediaType.registrationTree)
+        ++ mediaType.subtype
+        ++ Maybe.withDefault "" (Maybe.map ((++) "+") mediaType.suffix)
+        ++ Dict.foldl (\k v acc -> acc ++ ";" ++ k ++ "=" ++ v) "" mediaType.parameters

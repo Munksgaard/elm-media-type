@@ -364,4 +364,21 @@ suite =
                                 }
                             )
             ]
+        , describe "MediaType.toString"
+            [ test "text/html+gzip;charset=UTF-8;foo=bar" <|
+                \_ ->
+                    MediaType.fromString "text/html+gzip;charset=UTF-8;foo=bar"
+                        |> Maybe.map MediaType.toString
+                        |> Expect.equal (Just "text/html+gzip;charset=UTF-8;foo=bar")
+            , test "application/javascript" <|
+                \_ ->
+                    MediaType.fromString "application/javascript"
+                        |> Maybe.map MediaType.toString
+                        |> Expect.equal (Just "application/javascript")
+            , test "application/vnd.openxmlformats-officedocument.wordprocessingml.document" <|
+                \_ ->
+                    MediaType.fromString "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        |> Maybe.map MediaType.toString
+                        |> Expect.equal (Just "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+            ]
         ]
