@@ -36,6 +36,7 @@ import Parser
         , loop
         , map
         , oneOf
+        , problem
         , run
         , spaces
         , succeed
@@ -136,6 +137,15 @@ parser =
         |= loop Dict.empty parameters
 
 
+checkParameterName : String -> Parser String
+checkParameterName s =
+    if List.all (\c -> Char.isAlpha c || c == '-') (String.toList s) then
+        succeed s
+
+    else
+        problem "Only letters and dashes allowed in paramater names"
+
+
 parameters : Dict String String -> Parser (Step (Dict String String) (Dict String String))
 parameters dict =
     oneOf
@@ -143,7 +153,10 @@ parameters dict =
             |. backtrackable spaces
             |. backtrackable (symbol ";")
             |. backtrackable spaces
-            |= backtrackable (getChompedString (chompUntil "="))
+            |= backtrackable
+                (getChompedString (chompUntil "=")
+                    |> andThen checkParameterName
+                )
             |. symbol "="
             |= getChompedString (chompWhile (not << flip List.member [ ',', ';' ]))
         , succeed ()

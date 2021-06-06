@@ -363,6 +363,18 @@ suite =
                                 , type_ = MediaType.Text
                                 }
                             )
+            , test "issue #2" <|
+                \_ ->
+                    MediaType.fromString "image/webp;base64,jP0u6wqbUWTwZj4AAA=="
+                        |> Expect.equal
+                            (Just
+                                { parameters = Dict.fromList []
+                                , registrationTree = Nothing
+                                , subtype = "webp"
+                                , suffix = Nothing
+                                , type_ = MediaType.Image
+                                }
+                            )
             ]
         , describe "MediaType.toString"
             [ test "text/html+gzip;charset=UTF-8;foo=bar" <|
